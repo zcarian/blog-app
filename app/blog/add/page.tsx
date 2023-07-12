@@ -2,6 +2,7 @@
 
 import { Fragment, useRef } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const postBlog = async ({
   title,
@@ -20,6 +21,7 @@ const postBlog = async ({
 };
 
 const AddBlog = () => {
+  const router = useRouter();
   const titleRef = useRef<HTMLInputElement | null>(null);
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -32,6 +34,7 @@ const AddBlog = () => {
         description: descriptionRef.current?.value,
       });
       toast.success("Blog Added Successfully", { id: "1" });
+      router.push("/");
     }
   };
 
