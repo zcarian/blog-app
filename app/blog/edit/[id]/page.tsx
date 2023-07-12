@@ -2,6 +2,8 @@
 import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useRef } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import DeleteButton from "@/app/components/DeleteButton";
+
 type UpdateBlogParams = {
   title: string;
   description: string;
@@ -11,15 +13,6 @@ const updateBlog = async (data: UpdateBlogParams) => {
   const res = fetch(`http://localhost:3000/api/blog/${data.id}`, {
     method: "PUT",
     body: JSON.stringify({ title: data.title, description: data.description }),
-    //@ts-ignore
-    "Content-Type": "application/json",
-  });
-  return (await res).json();
-};
-
-const deleteBlog = async (id: string) => {
-  const res = fetch(`http://localhost:3000/api/blog/${id}`, {
-    method: "DELETE",
     //@ts-ignore
     "Content-Type": "application/json",
   });
@@ -69,13 +62,6 @@ const EditBlog = ({ params }: { params: { id: string } }) => {
     }
   };
 
-  const handleDelete = async () => {
-    toast.loading("Deleting Blog...", { id: "2" });
-    await deleteBlog(params.id);
-    toast.success("Blog Deleted", { id: "2" });
-    router.push("/");
-  };
-
   return (
     <Fragment>
       <Toaster />
@@ -102,12 +88,7 @@ const EditBlog = ({ params }: { params: { id: string } }) => {
               </button>
             </div>
           </form>
-          <button
-            onClick={handleDelete}
-            className="font-semibold px-4 py-2 shadow-xl bg-red-400 rounded-lg mt-2 m-auto hover:bg-red-500"
-          >
-            Delete
-          </button>
+          <DeleteButton id={params.id} />
         </div>
       </div>
     </Fragment>
